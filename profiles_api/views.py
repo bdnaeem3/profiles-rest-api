@@ -27,7 +27,7 @@ class HelloAPIView(APIView):
 
         if serializer.is_valid():
             name = serializer.validated_data.get('name')
-            message = f'Hello {name}'
+            message = 'Hello ' + name
 
             return Response({'message': message})
         else:
@@ -35,3 +35,15 @@ class HelloAPIView(APIView):
                 serializer.errors,
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+
+    def put(self, request, pk=None):
+        return Response({'method':'PUT'})
+
+
+    def patch(self, request, pk=None):
+        return Response({'method':'PATCH'})
+
+
+    def delete(self, request, pk=None):
+        return Response({'method':'DELETE'})
