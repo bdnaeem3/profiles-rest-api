@@ -4,7 +4,7 @@
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
 from . import serializers
 
 class HelloAPIView(APIView):
@@ -47,3 +47,51 @@ class HelloAPIView(APIView):
 
     def delete(self, request, pk=None):
         return Response({'method':'DELETE'})
+
+
+class HelloViewsets(viewsets.ViewSet):
+
+    serializer_class = serializers.HelloSerializer
+
+    def list(self, request):
+
+        a_viewsets = [
+            'View sets',
+            'Naeem Ahmed',
+            'Nayon Ahmed',
+            'Sadik',
+        ]
+
+        return Response({'message':'Hello','ViewSet': a_viewsets})
+
+
+    def create(self, request):
+
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            name = serializer.validated_date.get('name')
+            message = 'Hello ' + name
+
+            return Response({'message':message, 'Name': name})
+        else:
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+    def retrieve(self, request, pk=None):
+        return Response({'method':'Retrieve (Get)'})
+
+
+    def update(self, request, pk=None):
+        return Response({'method': 'Update (Put)'})
+
+
+    def partial_updates(self, request, pk=None):
+        return Response({'method': 'Partial Update (Patch)'})
+
+
+    def destroy(self, request, pk=None):
+        return Response({'method': 'Destryo (Delete)'})
